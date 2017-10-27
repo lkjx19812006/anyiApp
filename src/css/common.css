@@ -1,0 +1,10 @@
+body, html, h1, h2, h3, h4, h5, h6, ul, li, ol, dl, dt, dd, p, input {
+  padding: 0;
+  margin: 0;
+}
+
+.flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}

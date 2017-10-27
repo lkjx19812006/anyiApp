@@ -1,0 +1,23 @@
+$em-base:75;
+@function rem($pxval) {
+    @if not unitless($pxval) {
+      $pxval: strip-units($pxval);
+    }
+  
+    $base: $em-base;
+    @if not unitless($base) {
+      $base: strip-units($base);
+    }
+    @return ($pxval / $base) * 1rem;
+  }
+
+body,html,h1,h2,h3,h4,h5,h6,ul,li,ol,dl,dt,dd,p,input{
+  padding: 0;
+  margin: 0;
+}
+// flex布局默认主轴方向 竖直 其他样式暂不书写
+.flex{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
