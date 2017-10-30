@@ -22,21 +22,27 @@ var writeRoute = {
                 var obj = {
                     path: '',
                     url: '',
+                    name: '',
                     component: ''
                 }
                 var pathName = files[i];
                 if (pathName) {
+                    var path;
                     if (this.hasVueFile(pathName)) {
                         pathName = files[i].split('.vue')[0];
+                        path = pathName.split(BASE_PATH)[1];
+                        obj.component = `../pages${path}.vue`;
+                    } else {
+                        path = pathName.split(BASE_PATH)[1];
                     }
-                    var path = pathName.split(BASE_PATH)[1];
-                    obj.component = "resolve => require(['../pages" + path + ".vue'], resolve)";
-                    obj.url = files[i];
-                    obj.path = path.replace(/_/g, ':');//带参数的路由替换
 
+                    obj.url = files[i];
+                    obj.path = path.replace(/_/g, ':');//带参数的路由替换                   
                     if (result.length === 0) {
+                        obj.name = obj.path.substring(1, obj.path.length).toUpperCase();
                         result.push(obj)
                     } else {
+                        obj.name = path.substring(1, path.length).replace(/\/|:|_/g, '_').toUpperCase();
                         this.resultAddItem(result, obj)
                     }
                 }
@@ -70,6 +76,7 @@ var writeRoute = {
         }
         //只存储一级文件
         if (!flag && obj.path.split('/').length === 2) {
+            obj.name = obj.path.substring(1, obj.path.length).toUpperCase();
             result.push(obj);
         }
     },
@@ -88,19 +95,29 @@ var writeRoute = {
 
         });
 
+        // var data = fs.readFileSync("test","utf-8");  
 
         //写入文
-        fs.writeFileSync(url, "const Foo = () => import('./Foo.vue') \n const aaa = () => import('./Foo.vue') \n const bbb = () => import('./Foo.vue')" )
+        fs.writeFileSync(url, this.getComponentStr(content))
 
-        
+
 
     },
-    writeRouteItem: function(){
-
+    getComponentStr: function (content) {
+        var str = '';
+        for (var i = 0; i < content.length; i++) {
+            if (content[i].component !== '') {
+                str = str + `const ${content[i].name} = import('${content[i].component}')\n`;
+                if (content[i].children && content[i].children.length > 0 ) {
+                    str = str + this.getComponentStr(content[i].children);
+                } 
+            }
+        }
+        return str
     },
     init: function () {
         this.writeRoute(this.filterFiles());
-        return
+        return JSON.stringify(this.filterFiles())
     }
 }
 
