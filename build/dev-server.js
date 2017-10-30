@@ -13,6 +13,13 @@ const webpack = require('webpack')
 const proxyMiddleware = require('http-proxy-middleware')
 const webpackConfig = require('./webpack.dev.conf')
 
+//动态写入路由文件
+const writeRoute = require('./writeRoute')
+
+console.log(writeRoute.init());
+
+return
+
 // default port where dev server listens for incoming traffic
 const port = process.env.PORT || config.dev.port
 // automatically open browser, if not set will be false
