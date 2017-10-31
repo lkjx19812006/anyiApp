@@ -15,10 +15,7 @@ const webpackConfig = require('./webpack.dev.conf')
 
 //动态写入路由文件
 const writeRoute = require('./writeRoute')
-
-console.log(writeRoute.init());
-
-return
+writeRoute.init()
 
 // default port where dev server listens for incoming traffic
 const port = process.env.PORT || config.dev.port
@@ -45,8 +42,10 @@ const hotMiddleware = require('webpack-hot-middleware')(compiler, {
 // https://github.com/jantimon/html-webpack-plugin/issues/680
 // compiler.plugin('compilation', function (compilation) {
 //   compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
-//     hotMiddleware.publish({ action: 'reload' })
-//     cb()
+//     hotMiddleware.publish({action: 'reload'})
+//     cb(
+//       writeRoute.init()
+//     )
 //   })
 // })
 

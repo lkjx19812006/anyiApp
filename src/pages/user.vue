@@ -3,12 +3,12 @@
 .contianer {
   height: 100%;
   width: 100%;
-  background: yellow;
+  background: orange;
 }
 </style>
 <template>
     <div class="contianer">
-        <h1>登陆页</h1>
+        <h1>用户页面</h1>
     </div>
 </template>
 <script>
@@ -16,11 +16,10 @@ export default {
   data() {
     return {};
   },
-  mounted(){
-    console.log(this.$store.state.routerRecord.globPathArr)
+  mounted() {
+    console.log(this.$store.state.routerRecord.globPathArr);
   },
-  methods: {
-
-  }
+  methods: {}
 };
 </script>
+

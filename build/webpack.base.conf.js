@@ -2,9 +2,10 @@
 const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
+// const webpack = require('webpack')
 const vueLoaderConfig = require('./vue-loader.conf')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
@@ -26,6 +27,10 @@ module.exports = {
       '@': resolve('src'),
     }
   },
+  // 此项配置可以将某些库设置为外部引用，内部不会打包合并进去。
+  // externals: {
+  //   // Qrious: 'qrious'
+  // },
   module: {
     rules: [
       {
@@ -63,5 +68,13 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  // // 挂载全局插件
+  // plugins: [
+  //   new webpack.ProvidePlugin({
+  //     jQuery: "jquery", 
+  //     $: "jquery",
+  //     jquery: 'jquery'
+  //   }),
+  // ]
 }

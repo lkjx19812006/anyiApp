@@ -14,6 +14,7 @@ BASE_PATH = BASE_PATH.replace(/\\/g, '/');
 pagesPath = pagesPath.replace(/\\/g, '/');
 
 var writeRoute = {
+    routerUrl: '../src/router/index.js',
     //过滤数组
     filterFiles: function () {
         var result = [];
@@ -86,38 +87,45 @@ var writeRoute = {
     },
     writeRoute: function (content) {
         //先删除文件 再创建文件
-        var url = path.resolve(__dirname, '../src/router/index.js')
-        if (fs.existsSync(url)) {
-            fs.unlinkSync(url);
-        }
-
-        content.forEach(function () {
-
-        });
-
-        // var data = fs.readFileSync("test","utf-8");  
-
+        var url = path.resolve(__dirname, this.routerUrl)
+        var routerStr = this.getComponentStr(content);
+        var routerArr = this.getRouters(content);
         //写入文
-        fs.writeFileSync(url, this.getComponentStr(content))
-
-
-
+        var str = `import Vue from 'vue'\nimport vueRouter from 'vue-router'\nVue.use(vueRouter)\n\n`;
+        str += `${routerStr}\n`;
+        str += `var router = new vueRouter(\n{\n routes: \n ${routerArr} \n}\n)\n\n`;
+        str += `export default router`;
+        fs.writeFileSync(url, str);
     },
+    getRouters: function (routrArr) {
+        var str = '';
+        for (var i = 0; i < routrArr.length; i++) {
+            if (routrArr[i].component !== '') {
+                if (routrArr[i].children && routrArr[i].children.length > 0) {
+                    str = str + `{\n path: '${routrArr[i].path}', \n component: ${routrArr[i].name}, \n children: ${this.getRouters(routrArr[i].children)}}, \n`;
+                } else {
+                    str = str + `{\n path: '${routrArr[i].path}', \n component: ${routrArr[i].name}}, \n`
+                }
+            }
+        }
+        str = str.substring(0, str.length - 3);
+        return `[\n${str}\n]`;
+    },
+    //获取引入组件字符串
     getComponentStr: function (content) {
         var str = '';
         for (var i = 0; i < content.length; i++) {
             if (content[i].component !== '') {
-                str = str + `const ${content[i].name} = import('${content[i].component}')\n`;
-                if (content[i].children && content[i].children.length > 0 ) {
+                str = str + `const ${content[i].name} = () => import('${content[i].component}')\n`;
+                if (content[i].children && content[i].children.length > 0) {
                     str = str + this.getComponentStr(content[i].children);
-                } 
+                }
             }
         }
         return str
     },
     init: function () {
         this.writeRoute(this.filterFiles());
-        return JSON.stringify(this.filterFiles())
     }
 }
 
