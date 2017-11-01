@@ -15,7 +15,8 @@ const webpackConfig = require('./webpack.dev.conf')
 
 //动态写入路由文件
 const writeRoute = require('./writeRoute')
-writeRoute.init()
+//配置重定向 支持数组和对象 {path: '/', name:'LOGIN', component:'URL'}
+writeRoute.init({path: '/', redirect: '/login'})
 
 // default port where dev server listens for incoming traffic
 const port = process.env.PORT || config.dev.port

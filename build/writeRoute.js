@@ -15,6 +15,7 @@ pagesPath = pagesPath.replace(/\\/g, '/');
 
 var writeRoute = {
     routerUrl: '../src/router/index.js',
+    pathObj: '',
     //过滤数组
     filterFiles: function () {
         var result = [];
@@ -89,7 +90,15 @@ var writeRoute = {
         //先删除文件 再创建文件
         var url = path.resolve(__dirname, this.routerUrl)
         var routerStr = this.getComponentStr(content);
+        if (this.pathObj && this.pathObj instanceof Array) {
+            this.pathObj.forEach(function (item) {
+                content.unshift(item);
+            })
+        } else if (this.pathObj) {
+            content.unshift(this.pathObj);
+        }
         var routerArr = this.getRouters(content);
+
         //写入文
         var str = `import Vue from 'vue'\nimport vueRouter from 'vue-router'\nVue.use(vueRouter)\n\n`;
         str += `${routerStr}\n`;
@@ -100,12 +109,14 @@ var writeRoute = {
     getRouters: function (routrArr) {
         var str = '';
         for (var i = 0; i < routrArr.length; i++) {
-            if (routrArr[i].component !== '') {
+            if (routrArr[i].component && routrArr[i].component !== '') {
                 if (routrArr[i].children && routrArr[i].children.length > 0) {
                     str = str + `{\n path: '${routrArr[i].path}', \n component: ${routrArr[i].name}, \n children: ${this.getRouters(routrArr[i].children)}}, \n`;
                 } else {
                     str = str + `{\n path: '${routrArr[i].path}', \n component: ${routrArr[i].name}}, \n`
                 }
+            } else if (routrArr[i].redirect && routrArr[i].redirect !== '') {//设置重定向
+                str = str + `{\n path: '${routrArr[i].path}', \n redirect: '${routrArr[i].redirect}'}, \n`
             }
         }
         str = str.substring(0, str.length - 3);
@@ -124,7 +135,16 @@ var writeRoute = {
         }
         return str
     },
-    init: function () {
+    //重定向 /
+    redirectPath: function (pathObj) {
+        if (pathObj && typeof pathObj === 'object') {
+            this.pathObj = pathObj;
+        }
+
+    },
+    init: function (pathObj) {
+        //是否自定义初始化一些数据
+        this.redirectPath(pathObj)
         this.writeRoute(this.filterFiles());
     }
 }

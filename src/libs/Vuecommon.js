@@ -164,6 +164,39 @@ Vue.component('anyi-page-content', {
 })
 
 /**
+ * anyi-page
+ * scroll 事件监听滚动高度
+ * 移动端页面
+ */
+Vue.component('anyi-page', {
+	name: 'AnyiPage',
+	componentName: 'AnyiPage',
+	functional: true,
+	render: function (createElement, context) {
+		var onEvent = {};
+		if (context.listeners.scroll) {
+			onEvent.scroll = context.listeners.scroll
+		};
+		var height = window.document.documentElement.getBoundingClientRect().height;
+		console.log(height)
+		return createElement('div', {
+			class: {
+				'anyi-page': true
+			},
+			style: {
+				'top': context.props.header ? context.props.header : '',
+				'bottom': context.props.footer ? context.props.footer : ''
+			},
+			on: onEvent
+		}, context.slots().default)
+	},
+	props: {
+		header: String,
+		footer: String
+	}
+})
+
+/**
  * loading 组件 icon
  * anyi-loading-icon
  * @props size //加载icon 的宽高
@@ -435,7 +468,7 @@ Vue.component('anyi-radio', {
 	},
 	beforeMount: function () {
 		//将父组件的值 赋值给自己
-		if (this.isGroup) this._radioGroup.$emit('input',  this._radioGroup.value);
+		if (this.isGroup) this._radioGroup.$emit('input', this._radioGroup.value);
 	},
 	methods: {
 		check: function () {
@@ -443,7 +476,7 @@ Vue.component('anyi-radio', {
 				return
 			};
 			//由包裹组件 传值给包裹组件
-			if (this.isGroup) {			
+			if (this.isGroup) {
 				this._radioGroup.$emit('input', this.label);
 			} else {
 				this.$emit('input', this.label);
