@@ -17,8 +17,12 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
+//引入mint-ui
+import MintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
+Vue.use(MintUI)
 
-//个人一些组件以及央视相关
+//个人一些组件相关
 import './libs/anyi-ui.css' //vue扩展全局组件相关
 import './libs/vueExtend.js' //vue自定义指令相关
 import './libs/Vuecommon.js' //vue自定义全局组件
@@ -35,9 +39,10 @@ import './libs/flexible'
 //书写全局back方法
 Vue.prototype.$back = function () {
   //删除路由
-  store.dispatch('shiftGlobPathArr').then(() => {
-    router.push(store.state.routerRecord.globPathArr[0])
-  })
+  // store.dispatch('shiftGlobPathArr').then(() => {
+  //   // router.push(store.state.routerRecord.globPathArr[0])
+  // })
+  window.history(-1)
 }
 
 

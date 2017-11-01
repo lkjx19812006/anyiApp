@@ -4,21 +4,20 @@ Vue.use(vueRouter)
 
 const HOME = () => import('../pages/home.vue')
 const LOGIN = () => import('../pages/login.vue')
-const USER = () => import('../pages/user.vue')
 
 var router = new vueRouter(
 {
  routes: 
  [
 {
+ path: '/', 
+ redirect: '/login'}, 
+{
  path: '/home', 
  component: HOME}, 
 {
  path: '/login', 
- component: LOGIN}, 
-{
- path: '/user', 
- component: USER}
+ component: LOGIN}
 ] 
 }
 )

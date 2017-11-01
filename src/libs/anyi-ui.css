@@ -89,9 +89,17 @@ input, button, textarea{
 }
 
 .anyi-page-content {
+    height: 100%;
+    width: 100%;
+    background: #fff;
+    overflow: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+}
+.anyi-page {
     height: 100vh;
     width: 100vw;
-    background: #fff;
     overflow: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;

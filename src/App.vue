@@ -1,23 +1,7 @@
 <template>
-  <div id="app">   
-      <anyi-page-content>
-          <transition :name="transitionName">
-            <router-view class="child-view"></router-view>          
-          </transition>
-      </anyi-page-content>  
-             
-      <anyi-page-footer>
-        <anyi-page-footer-item>
-          <router-link to="/home">home</router-link>
-        </anyi-page-footer-item>
-        <anyi-page-footer-item>
-          <router-link to="/login">login</router-link>
-        </anyi-page-footer-item>
-        <anyi-page-footer-item>
-          <router-link to="/user">user</router-link>
-        </anyi-page-footer-item>        
-      </anyi-page-footer>     
-  </div>
+  <transition :name="transitionName">
+    <router-view id="app" class="child-view"></router-view>          
+  </transition>  
 </template>
 
 <script>
@@ -76,10 +60,12 @@ export default {
 }
 
 .slide-right-enter-active {
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.3s ease-in-out;
+  z-index: 1;
 }
 .slide-right-leave-active {
-  transition: transform 0.5s 0.2s ease-out;
+  transition: transform 0.3s 0.2s ease-out;
+  z-index: 2;
 }
 .slide-right-enter {
   transform: translate3d(-100%, 0, 0);
