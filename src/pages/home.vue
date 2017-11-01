@@ -1,5 +1,11 @@
 <style scoped lang="less">
 @import "../css/common.less";
+.container {
+  bottom: 50px;
+}
+.top-header {
+  padding-top: unit(120/@rem, rem);
+}
 .header {
   margin: auto;
   margin-top: unit(50/@rem, rem);
@@ -34,44 +40,55 @@
     margin-right: unit(100/@rem, rem);
   }
   .right {
+    margin-left: unit(100/@rem, rem);
     justify-content: flex-end;
   }
 }
 .footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    margin: auto;
-    background: #e0e0e0;
-    padding: 4px 10px;
-    input{
-        margin-left: 20px;
-        height: 36px;
-        line-height: 36px;
-        border: 1px solid #d0d0d0;
-        border-radius: 18px;
-        background: #fff;
-    }
+  position: fixed;
+  bottom: 0;
+  z-index: 9999;
+  width: 100%;
+  margin: auto;
+  background: #e0e0e0;
+  padding: 4px 10px;
+  input {
+    margin-left: 20px;
+    height: 42px;
+    line-height: 42px;
+    border: 1px solid #d0d0d0;
+    border-radius: 21px;
+    background: #fff;
+    text-indent: 20px;
+    font-size: unit(32/@rem, rem);
+  }
 }
 </style>
 <template> 
-  <anyi-page @scroll="scroll" :footer="footer">
-      <div>
-         <div class="header">          
-         </div>
-         <h2 class="title">jiajia</h2>
+<div class="container">
+  <div class="footer flex row c-center">
+    <span class="f-0">
+        展开
+    </span>
+    <input @focus="inputFocus" type="text" class="f-1">
+  </div> 
+  <anyi-page ref="page" class="class home" @scroll="scroll" header="0px" :footer="footer">   
+      <div class="top-header">
+        <div class="header">          
+        </div>
+        <h2 class="title">jiajia</h2>
       </div>
       <ul class="items">
           <li class="item left flex">
               <div class="content">  
-                 Hi,我是你的私人风险管家,我可以为你提供风险预测,风险建议等服务,我知道的可多了,有什么问题直接问我就好了
+                Hi,我是你的私人风险管家,我可以为你提供风险预测,风险建议等服务,我知道的可多了,有什么问题直接问我就好了
               </div>
               <div class="block">
               </div>
           </li>
-           <li class="item left flex">
+          <li class="item left flex">
               <div class="content">  
-                 Hi,我是你的私人风险管家,我可以为你提供风险预测,风险建议等服务,我知道的可多了,有什么问题直接问我就好了
+                Hi,我是你的私人风险管家,我可以为你提供风险预测,风险建议等服务,我知道的可多了,有什么问题直接问我就好了
               </div>
               <div class="block">
               </div>
@@ -84,14 +101,63 @@
                   风险管家,我可以为你提
               </div>
           </li>
-      </ul>
-      <div class="footer flex row c-center">
-          <span class="f-0">
-              展开
-          </span>
-          <input type="text" class="f-1">
-      </div>
+          <li class="item left flex">
+              <div class="content">  
+                Hi,我是你的私人风险管家,我可以为你提供风险预测,风险建议等服务,我知道的可多了,有什么问题直接问我就好了
+              </div>
+              <div class="block">
+              </div>
+          </li>
+            <li class="item left flex">
+              <div class="content">  
+                Hi,我是你的私人风险管家,我可以为你提供风险预测,风险建议等服务,我知道的可多了,有什么问题直接问我就好了
+              </div>
+              <div class="block">
+              </div>
+          </li>
+      </ul>  
+      <ul class="items">
+          <li class="item left flex">
+              <div class="content">  
+                Hi,我是你的私人风险管家,我可以为你提供风险预测,风险建议等服务,我知道的可多了,有什么问题直接问我就好了
+              </div>
+              <div class="block">
+              </div>
+          </li>
+          <li class="item left flex">
+              <div class="content">  
+                Hi,我是你的私人风险管家,我可以为你提供风险预测,风险建议等服务,我知道的可多了,有什么问题直接问我就好了
+              </div>
+              <div class="block">
+              </div>
+          </li>
+          <li class="item right flex">
+              <div class="block">
+              </div>
+              <div class="content">
+                  如果你不知道怎么问,
+                  风险管家,我可以为你提
+              </div>
+          </li>
+          <li class="item left flex">
+              <div class="content">  
+                Hi,我是你的私人风险管家,我可以为你提供风险预测,风险建议等服务,我知道的可多了,有什么问题直接问我就好了
+              </div>
+              <div class="block">
+              </div>
+          </li>
+            <li class="item left flex">
+              <div class="content">  
+                Hi,我是你的私人风险管家,我可以为你提供风险预测,风险建议等服务,我知道的可多了,有什么问题直接问我就好了
+              </div>
+              <div class="block">
+              </div>
+          </li>
+      </ul>   
   </anyi-page>
+</div>
+
+   
 </template>
 <script>
 export default {
@@ -103,6 +169,9 @@ export default {
   methods: {
     scroll(e) {
       console.log(e.target.scrollTop);
+    },
+    inputFocus() {
+      console.log(this);
     }
   }
 };

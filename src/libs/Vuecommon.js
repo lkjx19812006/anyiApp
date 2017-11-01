@@ -171,28 +171,79 @@ Vue.component('anyi-page-content', {
 Vue.component('anyi-page', {
 	name: 'AnyiPage',
 	componentName: 'AnyiPage',
-	functional: true,
-	render: function (createElement, context) {
-		var onEvent = {};
-		if (context.listeners.scroll) {
-			onEvent.scroll = context.listeners.scroll
+	// functional: true,
+	data() {
+		return {
+			move: {
+				start: 0,
+				move: 0,
+				temp: 0,
+				end: 0
+			},
+			topFlag: false,
+			bottomFlag: false,
+			cntHeight: 0,
+			preHeight: 0,
+			transition: ''
+		}
+	},
+	render: function (createElement) {
+		var _self = this;
+		var onEvent = {
+			touchstart: function (e) {
+				//获取父元素的高度
+				_self.preHeight = _self.$parent.$el.offsetHeight;
+				//获取元素自身高度 
+				_self.cntHeight = _self.$el.offsetHeight;
+				_self.move.start = e.changedTouches[0].pageY;
+			},
+			touchmove: function (e) {
+				_self.transition = '';
+				_self.move.move = _self.move.temp + e.changedTouches[0].pageY - _self.move.start
+				//临界点移动处理
+				if (_self.move.move - _self.preHeight <= - _self.cntHeight - _self.offsetH) {
+					_self.move.move = - _self.cntHeight - _self.offsetH + _self.preHeight;
+					_self.bottomFlag = true;//触底
+				} else if (_self.move.move > _self.offsetH) {
+					_self.move.move = _self.offsetH;
+					_self.topFlag = true;//触顶
+				}
+			},
+			touchend: function (e) {
+				_self.move.temp = _self.move.move;
+				if (_self.topFlag || _self.move.temp > 0) {//触顶
+					_self.topFlag = false;
+					_self.move.temp = 0;
+					_self.move.move = 0;
+					_self.transition = 'translate .3s ease';
+					console.log('触顶');
+				} else if (_self.bottomFlag || _self.move.temp - _self.preHeight < - _self.cntHeight) {//触底
+					_self.bottomFlag = false;
+					_self.move.temp = -_self.cntHeight + _self.preHeight;
+					_self.move.move = _self.move.temp;
+					_self.transition = 'translate .3s ease';
+					console.log('触底');
+				} 
+			}
 		};
-		var height = window.document.documentElement.getBoundingClientRect().height;
-		console.log(height)
 		return createElement('div', {
 			class: {
 				'anyi-page': true
 			},
 			style: {
-				'top': context.props.header ? context.props.header : '',
-				'bottom': context.props.footer ? context.props.footer : ''
+				transform: `translate3d(0, ${_self.move.move}px, 0)`,
+				transition: this.transition
 			},
 			on: onEvent
-		}, context.slots().default)
+		}, this.$slots.default)
 	},
 	props: {
 		header: String,
-		footer: String
+		footer: String,
+		offsetH: {
+			type: Number,
+			default: 100
+		}
 	}
 })
 

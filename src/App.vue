@@ -35,14 +35,16 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@import "./css/common.scss";
+<style lang="less">
+@import "./css/common.less";
 .child-view {
   position: absolute;
   left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
+  overflow: hidden;
+  // overflow-y: auto;
+  // -webkit-overflow-scrolling: touch;
+  font-size: unit(28/@rem, rem);
   // transition: all .5s cubic-bezier(.55,0,.1,1);
 }
 //路由动效 样式
